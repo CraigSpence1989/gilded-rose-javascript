@@ -10,7 +10,7 @@ describe("Gilded Rose", function() {
 
   describe("update_quality()", function() {
 
-    it('it should degrade quality twice as fastOnce the sell_in days is less then zero', function(){
+    it('it should degrade quality twice as fast once the sell_in days is <= then zero', function(){
       items[0].sell_in = 0
       items[0].quality =2
 
@@ -20,6 +20,8 @@ describe("Gilded Rose", function() {
     })
 
     it('should not let quality be a negative value', function(){
+      items[0].sell_in = 0
+      items[0].quality =2
       update_quality();
 
       expect(items[0].quality).toEqual(0)
@@ -84,8 +86,8 @@ describe("Gilded Rose", function() {
       expect(items[4].quality).toEqual(23)
     })
 
-    it('should be 0 when sell_in < 0)', function(){
-      items[4].sell_in = 0
+    it('should set Backstage quality to 0 when sell_in < 0)', function(){
+      items[4].sell_in = -1
       items[4].quality = 20
 
       update_quality();
@@ -118,11 +120,8 @@ describe("Gilded Rose", function() {
     it('should return 3 for Backstage Passes as the sell_in value decreases while sell_in is <= 5', function(){
       expect(calculateDegradeRate('Backstage passes to a TAFKAL80ETC concert', 5)).toEqual(3)
     })
-    it('should return 0 for Backstage Passes as the sell_in value decreases while sell_in is < 0', function(){
-      expect(calculateDegradeRate('Backstage passes to a TAFKAL80ETC concert', -1)).toEqual(0)
-    })
     it('should return 2 for conjured items', function(){
-      expect(calculateDegradeRate('Conjured Mana Cake', 1)).toEqual(2)
+      expect(calculateDegradeRate('Conjured Mana Cake', 1)).toEqual(- 2)
     })
   })
 });
